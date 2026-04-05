@@ -2,52 +2,51 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "example" {
-  name     = "rg-terraform-vm"
-  location = "West Europe"
+resource "azurerm_resource_group" "main" {
+  name     = var.resource_group_name
+  location = var.location
 }
 
-resource "azurerm_virtual_network" "example" {
+resource "azurerm_virtual_network" "main" {
   name                = "vnet-example"
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
 }
 
-resource "azurerm_subnet" "example" {
+resource "azurerm_subnet" "main" {
   name                 = "subnet-example"
-  resource_group_name  = azurerm_resource_group.example.name
-  virtual_network_name = azurerm_virtual_network.example.name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-resource "azurerm_network_interface" "example" {
+resource "azurerm_network_interface" "main" {
   name                = "nic-example"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.example.id
+    subnet_id                     = azurerm_subnet.main.id
     private_ip_address_allocation = "Dynamic"
   }
 }
 
-resource "azurerm_linux_virtual_machine" "example" {
-  name                = "vm-terraform"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  size                = "Standard_B1s"
+resource "azurerm_linux_virtual_machine" "main" {
+  name                = var.vm_name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  size                = var.vm_size
 
-  admin_username = "azureuser"
-
-  network_interface_ids = [
-    azurerm_network_interface.example.id,
-  ]
-
-  admin_password = "Password1234!"
+  admin_username = var.admin_username
+  admin_password = var.admin_password
 
   disable_password_authentication = false
+
+  network_interface_ids = [
+    azurerm_network_interface.main.id,
+  ]
 
   os_disk {
     caching              = "ReadWrite"
