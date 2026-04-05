@@ -17,3 +17,7 @@ variable "vm_size" {
 variable "admin_username" {
   default = "azureuser"
 }
+
+variable "admin_password" {
+  default = "Password1234!"
+}
