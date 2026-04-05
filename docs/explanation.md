@@ -1,10 +1,10 @@
 # Explanation
 
-This project uses Terraform to define and deploy infrastructure in Azure.
+This project uses Terraform to create infrastructure in Azure.
 
-Instead of creating resources manually in the Azure portal, everything is written in code.
+Instead of using the Azure portal, everything is defined in code.
 
-## What is included
+## Resources included
 
 - resource group
 - virtual network
@@ -16,6 +16,6 @@ Instead of creating resources manually in the Azure portal, everything is writte
 
 Using Infrastructure as Code makes it easier to:
 
-- recreate environments
-- keep track of changes
+- recreate the same setup
 - manage infrastructure in a structured way
+- understand how resources are connected
